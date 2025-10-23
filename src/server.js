@@ -6,9 +6,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 🧱 Basic password protection
-app.use((req, res, next) => {
- 
+app.get("/", (req, res) => {
+  res.send("Server is live on Render 🚀");
 });
 
-
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));
