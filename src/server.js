@@ -1,13 +1,21 @@
-import express from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
+const express = require("express");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Server is live on Render 🚀");
+// --- API routes (example) ---
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello from your backend!" });
 });
 
-app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+// --- Serve the static frontend ---
+const CLIENT_DIR = path.join(__dirname, "../frontend"); // ../ from backend/ to frontend/
+app.use(express.static(CLIENT_DIR));
+
+// SPA/Default fallback to index.html (so /, /about, etc. work)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(CLIENT_DIR, "index.html"));
+});
+
+app.listen(PORT, () => console.log(`Running on ${PORT}`));
